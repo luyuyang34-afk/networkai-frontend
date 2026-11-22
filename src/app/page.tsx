@@ -1,4 +1,4 @@
-import { EmptyState } from "@/components/empty-state";
+import { Workspace } from "@/components/workspace";
 
 export default function Home() {
   return (
@@ -12,9 +12,7 @@ export default function Home() {
           Find images and ideas shared by the community.
         </p>
       </header>
-      <EmptyState title="No posts to display">
-        Community posts will appear here.
-      </EmptyState>
+      <Workspace />
     </main>
   );
 }

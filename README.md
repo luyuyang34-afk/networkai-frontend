@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NetworkAI Frontend
 
-## Getting Started
+A small creator community built with **Next.js 16 (App Router), React 19, TypeScript and Tailwind CSS**.
+It talks to a Go + Elasticsearch + Google Cloud Storage backend: [luyuyang34-afk/networkai](https://github.com/luyuyang34-afk/networkai).
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Accounts** – sign up and sign in; the Go API issues a JWT that the browser sends as a Bearer token.
+- **Discover** – search posts by caption keywords or exact creator, with image and video cards.
+- **Publish** – upload a JPG, PNG, GIF, MP4 or MOV (up to 10 MB) with a caption.
+- **Ownership** – authors see a Delete control on their own posts; the backend enforces ownership.
+- **AI Studio** – describe an image (optionally with a reference image), preview the result, then publish it.
+- **Networking assistant** – an OpenAI tool-calling agent that searches posts for you and suggests who to connect with.
+
+## Architecture
+
+```
+Browser (client components)
+ ├─ src/lib/api.ts ──────────────▶ Go API (auth, posts, search, delete)
+ └─ /api/image, /api/agent ──────▶ Next.js route handlers (server only)
+                                      ├─ verify the JWT with the Go API first
+                                      └─ call OpenAI with a server-side key
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- The OpenAI key never reaches the browser: only `NEXT_PUBLIC_*` variables are bundled into client code.
+- The image route checks origin, token shape, body size and image magic bytes before any paid call.
+- The feed cancels stale searches with `AbortController` and refetches after publishing via a revision counter.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Getting started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+cp .env.example .env.local   # then fill in the values
+npm run dev                  # http://localhost:3000
+```
 
-## Learn More
+| Variable | Where it is used |
+|---|---|
+| `NEXT_PUBLIC_API_BASE_URL` | Base URL of the Go API (public) |
+| `OPENAI_API_KEY` | Server-only key for AI Studio and the assistant |
+| `OPENAI_AGENT_MODEL` | Model used by the networking assistant |
+| `NETWORKAI_APP_ORIGIN` | Optional; the public origin when running behind a proxy |
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Checks: `npm run lint`, `npx tsc --noEmit`, `npm run build`.
