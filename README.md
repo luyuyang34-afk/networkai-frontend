@@ -3,6 +3,16 @@
 A small creator community built with **Next.js 16 (App Router), React 19, TypeScript and Tailwind CSS**.
 It talks to a Go + Elasticsearch + Google Cloud Storage backend: [luyuyang34-afk/networkai](https://github.com/luyuyang34-afk/networkai).
 
+## Screenshots
+
+**Discover feed** – the images by luka and vincent were created with AI Studio; Delete appears only on your own posts.
+
+![Discover feed](docs/screenshots/feed.png)
+
+| AI Studio prompt | Sign in |
+|---|---|
+| ![AI Studio](docs/screenshots/ai-studio.png) | ![Sign in](docs/screenshots/sign-in.png) |
+
 ## Features
 
 - **Accounts** – sign up and sign in; the Go API issues a JWT that the browser sends as a Bearer token.

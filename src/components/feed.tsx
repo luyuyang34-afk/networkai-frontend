@@ -87,28 +87,59 @@ export function Feed({ token, onExpired, revision }: {
         </EmptyState>
       )}
       {!loading && !error && (
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
-            <article key={post.id} className="panel">
-              {post.type === "image" && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={post.url}
-                  alt={post.message || "Community image"}
-                  loading="lazy"
-                />
-              )}
-              {post.type === "video" && (
-                <video src={post.url} controls preload="metadata" />
-              )}
-              {post.type === "unknown" && <p>Media unavailable</p>}
-              <h3 className="font-semibold">{post.message}</h3>
-              <p>By {post.user}</p>
-              {post.user === username && (
-                <button disabled={!!deletingId} onClick={() => void remove(post)}>
-                  {deletingId === post.id ? "Deleting..." : "Delete"}
-                </button>
-              )}
+            <article
+              key={post.id}
+              className="overflow-hidden rounded-xl border border-[#d2dbd2] bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            >
+              <div className="aspect-square bg-[#eef1ea]">
+                {post.type === "image" && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={post.url}
+                    alt={post.message || "Community image"}
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                )}
+                {post.type === "video" && (
+                  <video
+                    src={post.url}
+                    controls
+                    preload="metadata"
+                    className="h-full w-full bg-black object-contain"
+                  />
+                )}
+                {post.type === "unknown" && (
+                  <p className="grid h-full place-items-center text-sm text-slate-500">
+                    Media unavailable
+                  </p>
+                )}
+              </div>
+              <div className="space-y-3 p-4">
+                <h3 className="font-semibold leading-snug">{post.message}</h3>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="flex items-center gap-2 text-sm text-slate-600">
+                    <span
+                      aria-hidden="true"
+                      className="grid h-7 w-7 place-items-center rounded-full bg-[#244935] text-xs font-semibold uppercase text-white"
+                    >
+                      {post.user.slice(0, 1)}
+                    </span>
+                    By {post.user}
+                  </p>
+                  {post.user === username && (
+                    <button
+                      disabled={!!deletingId}
+                      onClick={() => void remove(post)}
+                      className="border border-[#a12821] !bg-white text-sm !text-[#a12821] hover:!bg-[#fbeceb]"
+                    >
+                      {deletingId === post.id ? "Deleting..." : "Delete"}
+                    </button>
+                  )}
+                </div>
+              </div>
             </article>
           ))}
         </div>

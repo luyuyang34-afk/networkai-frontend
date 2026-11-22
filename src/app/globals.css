@@ -4,6 +4,7 @@ body {
   background: #f7f8f3;
   color: #17231b;
   font-family: system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 form,
 .panel {
@@ -12,7 +13,8 @@ form,
   border: 1px solid #d2dbd2;
   border-radius: 0.75rem;
   background: white;
-  padding: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 1px 2px rgb(23 35 27 / 0.05);
 }
 label {
   display: grid;
@@ -24,13 +26,26 @@ select {
   border: 1px solid #7a8e80;
   border-radius: 0.4rem;
   padding: 0.45rem;
+  background: white;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid #244935;
+  outline-offset: 1px;
 }
 button {
   justify-self: start;
   border-radius: 0.4rem;
   background: #244935;
   color: white;
-  padding: 0.45rem 0.75rem;
+  padding: 0.45rem 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 150ms;
+}
+button:hover:not(:disabled) {
+  background: #1a3627;
 }
 button:disabled {
   opacity: 0.6;
